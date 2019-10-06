@@ -64,7 +64,7 @@ namespace Gade_Assignment_1
             {
                 for (int j = 0; j < 20; j++)
                 {
-                    map1[i, j] = "o";
+                    map1[i, j] = " ";
                 }
             }
 
@@ -111,6 +111,28 @@ namespace Gade_Assignment_1
             //    newRangedUnit.Location = new Point(R.XPos * 20, R.YPos * 20);
             //    groupBox.Controls.Add(newRangedUnit);
             //}
+        }
+        public string get_ranged_unit_info()
+        {
+            string text = "";
+            //ranged unit info
+            foreach (RangedUnit R in rangedUnits)
+            {
+                text += R.ToString();
+                text += Environment.NewLine;
+            }
+            return text;
+        }
+        public string get_melee_unit_info()
+        {
+            string text = "";
+            //melee unit info
+            foreach (MeleeUnit M in meleeUnits)
+            {
+                text += M.ToString();
+                text += Environment.NewLine;
+            }
+            return text;
         }
     }
 }

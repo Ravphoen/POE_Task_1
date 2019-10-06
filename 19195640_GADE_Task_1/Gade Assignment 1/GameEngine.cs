@@ -16,66 +16,12 @@ namespace Gade_Assignment_1
         }
         public Map map;
 
-        public int RoundsCompleted=0;
-
-        public void MapUpdate()
-        {
-
-
-        }
-
-        public void Updateunit()
-        {
-
-
-        }
-        public string Updatedisplay()
-        {
-            return map.DisplayMap();
-        }
+        public int roundscompleted=0;
 
         public void startround()
         {
+            //combat for ranged units
             foreach (RangedUnit R in map.rangedUnits)
-            {
-                Unit enemy = checkforenemies(R);
-                if (enemy != null)
-                {
-                    if (R.Health >= 25/100*R.MaxHealth)
-                    {
-                        //movecloser
-                        R.Move(Movecloser());
-                        if (enemy is RangedUnit)
-                        {
-                            RangedUnit Enemy = enemy as RangedUnit;
-                            if (R.Can_AttackR(Enemy))
-                            {
-                                R.CombatR(Enemy);
-                            }
-                        }
-                        if (enemy is MeleeUnit)
-                        {
-                            MeleeUnit Enemy = enemy as MeleeUnit;
-                            if (R.Can_AttackM(Enemy))
-                            {
-                                R.CombatM(Enemy);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        R.Move(RunAway());
-                        //run away 
-                    }
-                }
-                else
-                {
-                    //do nothing
-                }
-            }
-
-
-            foreach (MeleeUnit R in map.meleeUnits)
             {
                 Unit enemy = checkforenemies(R);
                 if (enemy != null)
@@ -86,13 +32,9 @@ namespace Gade_Assignment_1
                         R.Move(Movecloser());
                         if (enemy is RangedUnit)
                         {
-                            RangedUnit Enemy = enemy as RangedUnit;
-                            if (R.Can_AttackR(Enemy))
-                            {
-                                R.CombatR(Enemy);
-                            }
+                            R.Move(RunAway());//won't attack team mate
                         }
-                        if (enemy is MeleeUnit)
+                        else
                         {
                             MeleeUnit Enemy = enemy as MeleeUnit;
                             if (R.Can_AttackM(Enemy))
@@ -100,6 +42,7 @@ namespace Gade_Assignment_1
                                 R.CombatM(Enemy);
                             }
                         }
+                       
                     }
                     else
                     {
@@ -112,20 +55,86 @@ namespace Gade_Assignment_1
                     //do nothing
                 }
             }
-            RoundsCompleted++;
-        }
+            //combat for melee units
+            foreach (MeleeUnit M in map.meleeUnits)
+            {
+                Unit enemy = checkforenemies(M);
+                if (enemy != null)
+                {
+                    if (M.Health >= 25 / 100 * M.MaxHealth)
+                    {
+                        //movecloser
+                        M.Move(Movecloser());
+                        if (enemy is RangedUnit)
+                        {
+                            RangedUnit Enemy = enemy as RangedUnit;
+                            if (M.Can_AttackR(Enemy))
+                            {
+                                M.CombatR(Enemy);
+                            }
+                        }
+                        else
+                        {
+                            M.Move(RunAway());//won't attack team mate
+                        }
+                        
+                    }
+                    else
+                    {
+                        M.Move(RunAway());
 
+                        //run away 
+                    }
+                }
+                else
+                {
+                    //do nothing
+                }
+            }
+         roundscompleted++;
+        }
+        public void MapUpdate()
+        {
+
+
+        }
+        public string Updateunit()
+        {
+            string info =
+                map.get_melee_unit_info()
+                + map.get_ranged_unit_info();
+            return info;
+
+        }
+       
+        public string Updatedisplay()
+        {
+            return map.DisplayMap();
+        }
         public Unit checkforenemies(Unit lookingforenemies)
         {
-            Unit enemy = lookingforenemies.Closest_Other_Enemy();
-            return enemy;
-        }
+            if (lookingforenemies is RangedUnit)
+            {
+                RangedUnit enemy = lookingforenemies as RangedUnit;
+                enemy = lookingforenemies.Closest_Other_EnemyR(map.rangedUnits);
+                return enemy;
+            }
+            else if (lookingforenemies is MeleeUnit)
+            {
+                MeleeUnit enemy = lookingforenemies as MeleeUnit;
+                enemy = lookingforenemies.Closest_Other_EnemyM(map.meleeUnits);
+                return enemy;
+            }           
+            else
+            {
+                return null;
+            }
 
+        }
         public Map.Direction RunAway()
         {
             return Map.Direction.North;
         }
-
         public Map.Direction Movecloser()
         {
             return Map.Direction.West;

@@ -27,14 +27,13 @@ namespace Gade_Assignment_1
             get { return base.xpos; }
             set
             {
-
-                if (value <0 )
+                if (value <1 )
                 {
-                    XPos = 0;
+                    XPos = 2;
                 }
                 else if (value > 19)
                 {
-                    XPos = 20;
+                    XPos = 18;
                 }
                 else
                 {

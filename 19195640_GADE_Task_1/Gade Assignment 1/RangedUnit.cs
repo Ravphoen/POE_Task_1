@@ -218,7 +218,7 @@ namespace Gade_Assignment_1
 
             foreach (MeleeUnit M in Munits)
             {
-                totaldifference = Math.Abs(this.XPos - M.XPos);
+                totaldifference = Math.Abs(this.XPos - M.XPos);//is this causing crash ? 
                 totaldifference += Math.Abs(this.YPos - M.YPos);
                 if (closestenemy == null)
                 {
@@ -251,8 +251,7 @@ namespace Gade_Assignment_1
         {
             //overriding the ToString method in C# by displaying values in class to the user
             return "UnitInfo:" + "Unit position :(" + xpos + "," + ypos + ")"
-            + "Unit type: Ranged"
-            + "Unit Name" + unit_name
+            + "Unit type: Ranged"            
             + "\nUnit Health: " + health
             + ".\nUnit Max Health:" + max_health
             + ".\n Unit Damage:" + attack

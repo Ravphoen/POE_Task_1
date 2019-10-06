@@ -37,7 +37,7 @@ namespace Gade_Assignment_1
         private void timer1_Tick(object sender, EventArgs e)
         {
             MapTextBox.Text = gameengine.Updatedisplay();
-            lblRound.Text = gameengine.RoundsCompleted.ToString();
+            lblRound.Text = gameengine.roundscompleted.ToString();
             gameengine.startround();
         }
 
